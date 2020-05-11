@@ -10,5 +10,12 @@ class Environment(object):
         self.registers[self.reg_id_from_reg_name(reg_name)] = value
         return True
 
-    def get_register(self, reg_id, value):
+    def get_register(self, reg_id):
         return self.registers[reg_id]
+
+    def set_label(self, label_name, value):
+        self.labels[label_name] = value
+        return True
+
+    def get_label(self, label_name, value):
+        return self.labels[label_name]

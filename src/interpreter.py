@@ -22,13 +22,14 @@ class Interprerter(object):
     def generate_file(self):
         lst_tokenized_lines = self.tokenizer.tokenize()
 
-        lst_parsed = self.parser.parse_tokens(lst_tokenized_lines)
+        lst_flow, lst_labels = self.parser.parse_tokens(lst_tokenized_lines)
 
-        str_generated = self.generator.generate(lst_parsed)
+        str_generated = self.generator.generate(lst_flow, lst_labels)
 
         with open(self.interpreted_file_name, "w") as f:
             f.write(str_generated)
 
     def run_generated_file(self):
+        pdb.set_trace()
         from interpreted_tmp import run
         run(self.env)

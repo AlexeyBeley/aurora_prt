@@ -49,21 +49,6 @@ class Tokenizer:
 
         return self._label(str_line)
 
-    def operator_to_lambda(self, val):
-        if val == "+":
-            return lambda x, y: x+y
-        elif val == "*":
-            return lambda x, y: x * y
-        elif val == ">":
-            return lambda x, y: x > y
-        elif val == "<":
-            return lambda x, y: x < y
-        elif val == "=":
-            return lambda x, y: x < y
-        else:
-            raise TokenizerError("{} is not a valid operator".format(val))
-
-
     def int_or_reg(self, val):
         if val.startswith("R"):
             int(val[1:])
@@ -85,7 +70,6 @@ class Tokenizer:
 
     def _if(self, str_line):
         lst_ret = str_line.split(" ")
-        lst_ret[2] = self.operator_to_lambda(lst_ret[2])
         return self.TokenType.IF, lst_ret[1:]
 
     def _jump(self, str_line):

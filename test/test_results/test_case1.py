@@ -6,4 +6,3 @@ def run(env):
             line += 1
         else:
             return
-#LET R0 := R0 * 2
