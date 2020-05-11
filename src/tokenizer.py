@@ -13,7 +13,7 @@ class Tokenizer:
                           "IF ": self._if,
                           "JUMP ": self._jump,
                           "CALL ": self._call,
-                          "RERTURN": self._return,
+                          "RETURN": self._return,
                           "PRINT ": self._print}
 
         with open(file_name) as f:
@@ -29,17 +29,19 @@ class Tokenizer:
         LABEL = 7
 
     def tokenize(self):
-        return [self.tokenize_line(line) for line in self.lines]
+        return [self.tokenize_line(line) for line in self.lines if line is not None]
 
     def tokenize_line(self, str_line):
         str_line = str_line.strip("\n")
         str_line = str_line.strip(" ")
+        if not str_line:
+            return None
 
         for token_key, token_func in self.tokens_map.items():
             if str_line.startswith(token_key):
                 return token_func(str_line)
 
-        self._label(str_line)
+        return self._label(str_line)
 
     def operator_to_lambda(self, val):
         if val == "+":
@@ -74,7 +76,6 @@ class Tokenizer:
             lst_ret[4] = self.operator_to_lambda(lst_ret[4])
             lst_ret[5] = self.int_or_reg(lst_ret[5])
             if isinstance(lst_ret[3], int) and isinstance(lst_ret[5], int):
-                pdb.set_trace()
                 lst_ret[3] = lst_ret[4](lst_ret[3], lst_ret[5])
                 lst_ret = lst_ret[:4]
 
@@ -90,16 +91,18 @@ class Tokenizer:
         return self.TokenType.JUMP, lst_ret[1:]
 
     def _call(self, str_line):
-        pdb.set_trace()
+        lst_ret = str_line.split(" ")
         return self.TokenType.CALL, lst_ret[1:]
 
     def _return(self, str_line):
-        pdb.set_trace()
-        return self.TokenType.RETURN, lst_ret
+        if str_line != "RETURN":
+            return self._label(str_line)
+
+        return self.TokenType.RETURN, None
 
     def _print(self, str_line):
-        pdb.set_trace()
-        return self.TokenType.PRINT, lst_ret
+        lst_ret = str_line.split(" ")
+        return self.TokenType.PRINT, lst_ret[1:]
 
     def _label(self, str_line):
         if " " in str_line:
