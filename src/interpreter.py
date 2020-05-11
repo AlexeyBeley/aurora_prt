@@ -12,10 +12,11 @@ class Interprerter(object):
         self.parser = Parser()
         self.generator = Generator()
         self.env = Environment()
+        self.interpreted_file_name = None
 
-        self.interpreted_file_name = os.path.join(os.path.abspath(os.path.dirname(__file__)), "interpreted_tmp.py")
+    def run_interpreter(self, dst_file_name="interpreted_tmp.py"):
+        self.interpreted_file_name = os.path.join(os.path.abspath(os.path.dirname(__file__)), "generated_files", dst_file_name)
 
-    def run_interpreter(self):
         self.generate_file()
         self.run_generated_file()
 
@@ -29,5 +30,8 @@ class Interprerter(object):
             f.write(str_generated)
 
     def run_generated_file(self):
-        from interpreted_tmp import run
-        run(self.env)
+        module_name = os.path.basename(self.interpreted_file_name)
+        module_name = "generated_files." + module_name.strip(".py")
+        mod = __import__(module_name, fromlist=[''])
+        mod.run(self.env)
+

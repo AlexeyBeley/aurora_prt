@@ -10,6 +10,16 @@ class Parser(object):
 
     JUMP_FLOW_STEP = ["line = env.get_line_by_label('{LABEL_NAME}')"]
 
+    PRINT_FLOW_STEP = ["print({VALUE})",
+                       "line += 1"
+                      ]
+
+    IF_FLOW_STEP = ["if {REGISTER_LEFT_VALUE} {IF_OPERATOR} {REGISTER_RIGHT_VALUE:",
+                    "    line = env.get_line_by_label('{JUMP_LABEL_NAME}}')",
+                    "else:",
+                    "    line += 1"
+                   ]
+
     GET_REGISTER_VALUE = "env.get_register('{REGISTER_NAME}')"
     SET_LABEL_VALUE = "env.set_label('{LABEL_NAME}', {LINE_NUMBER})"
 
@@ -35,14 +45,29 @@ class Parser(object):
             elif token_type == Tokenizer.TokenType.JUMP:
                 lst_let = self.init_jump(token_value)
                 lst_flow += lst_let
+            elif token_type == Tokenizer.TokenType.PRINT:
+                lst_let = self.init_print(token_value)
+                lst_flow += lst_let
+            elif token_type == Tokenizer.TokenType.IF:
+                lst_let = self.init_if(token_value)
+                lst_flow += lst_let
             else:
                 pdb.set_trace()
 
         lst_flow += self.FINAL_ELSE
         return lst_flow, lst_labels
 
+    def handle_flow_if_statement(self):
+        if self.line == 0:
+            ret = ["if line == {}:".format(self.line)]
+        else:
+            ret = ["elif line == {}:".format(self.line)]
+
+        self.line += 1
+        return ret
+
     def init_let(self, token_value):
-        lst_ret = ["if line == {}:".format(self.line)]
+        lst_ret = self.handle_flow_if_statement()
         string_block_let = "\n".join(self.LET_FLOW_STEP)
 
         if len(token_value) == 3:
@@ -56,30 +81,45 @@ class Parser(object):
                                                        VALUE=expression)
 
         lst_ret += self.string_block_to_intended_lines(string_block_let)
-        self.line += 1
+
         return lst_ret
 
     def init_label(self, token_value):
-        lst_label_flow = ["if line == {}:".format(self.line)]
+        lst_label_flow = self.handle_flow_if_statement()
 
-        lst_label_set = [self.SET_LABEL_VALUE.format(LABEL_NAME=token_value[0], LINE_NUMBER=self.line)]
+        lst_label_set = [self.SET_LABEL_VALUE.format(LABEL_NAME=token_value[0], LINE_NUMBER=self.line-1)]
 
         string_block_let = "\n".join(self.LABEL_FLOW_STEP)
         lst_label_flow += self.string_block_to_intended_lines(string_block_let)
-
-        self.line += 1
-
         return lst_label_flow, lst_label_set
 
     def init_jump(self, token_value):
-        lst_flow = ["if line == {}:".format(self.line)]
-        string_block_let = "\n".join(self.JUMP_FLOW_STEP)
-        string_block_let = string_block_let.format(LABEL_NAME=token_value[0])
-        lst_flow += self.string_block_to_intended_lines(string_block_let)
-
-        self.line += 1
-
+        lst_flow = self.handle_flow_if_statement()
+        string_block = "\n".join(self.JUMP_FLOW_STEP)
+        string_block = string_block.format(LABEL_NAME=token_value[0])
+        lst_flow += self.string_block_to_intended_lines(string_block)
         return lst_flow
+
+    def init_print(self, token_value):
+        #print(env.get_register('R1'))
+        lst_flow = self.handle_flow_if_statement()
+        string_block = "\n".join(self.PRINT_FLOW_STEP)
+        string_block = string_block.format(VALUE=self.GET_REGISTER_VALUE.format(REGISTER_NAME=token_value[0]))
+        lst_flow += self.string_block_to_intended_lines(string_block)
+        return lst_flow
+
+    def init_if(self, token_value):
+        lst_flow = self.handle_flow_if_statement()
+        string_block = "\n".join(self.IF_FLOW_STEP)
+        pdb.set_trace()
+        string_block = string_block.format(REGISTER_LEFT_VALUE=self.GET_REGISTER_VALUE.format(REGISTER_NAME=token_value[0]),
+                                           IF_OPERATOR=token_value[0],
+                                           REGISTER_RIGHT_VALUE=self.GET_REGISTER_VALUE.format(REGISTER_NAME=token_value[1]),
+                                           JUMP_LABEL_NAM=token_value[2]
+                                           )
+        lst_flow += self.string_block_to_intended_lines(string_block)
+        return lst_flow
+
 
     def init_register_or_int_template(self, value):
         if isinstance(value, int):

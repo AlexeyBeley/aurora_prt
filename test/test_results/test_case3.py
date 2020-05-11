@@ -4,7 +4,7 @@ def run(env):
     while True:
         if line == 0:
             line = env.get_line_by_label('END')
-        if line == 1:
+        elif line == 1:
             line += 1
         else:
             return
