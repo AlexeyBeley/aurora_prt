@@ -9,7 +9,7 @@ class Generator(object):
         if len(lst_label_lines) > 0:
             for str_set_label in lst_label_lines:
                 lst_new.append("{}{}".format(for_spaces * indent, str_set_label))
-            pdb.set_trace()
+
         lst_new.append("{}line = 0".format(for_spaces * indent))
         lst_new.append("{}while True:".format(for_spaces * indent))
 

@@ -8,6 +8,8 @@ class Parser(object):
 
     LABEL_FLOW_STEP = ["line += 1"]
 
+    JUMP_FLOW_STEP = ["line = env.get_line_by_label('{LABEL_NAME}')"]
+
     GET_REGISTER_VALUE = "env.get_register('{REGISTER_NAME}')"
     SET_LABEL_VALUE = "env.set_label('{LABEL_NAME}', {LINE_NUMBER})"
 
@@ -30,6 +32,9 @@ class Parser(object):
                 lst_label_flow, lst_label_set = self.init_label(token_value)
                 lst_flow += lst_label_flow
                 lst_labels += lst_label_set
+            elif token_type == Tokenizer.TokenType.JUMP:
+                lst_let = self.init_jump(token_value)
+                lst_flow += lst_let
             else:
                 pdb.set_trace()
 
@@ -65,6 +70,16 @@ class Parser(object):
         self.line += 1
 
         return lst_label_flow, lst_label_set
+
+    def init_jump(self, token_value):
+        lst_flow = ["if line == {}:".format(self.line)]
+        string_block_let = "\n".join(self.JUMP_FLOW_STEP)
+        string_block_let = string_block_let.format(LABEL_NAME=token_value[0])
+        lst_flow += self.string_block_to_intended_lines(string_block_let)
+
+        self.line += 1
+
+        return lst_flow
 
     def init_register_or_int_template(self, value):
         if isinstance(value, int):

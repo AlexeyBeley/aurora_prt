@@ -84,6 +84,18 @@ class TestALPLInterpreter(unittest.TestCase):
         with open(result_filename) as f:
             self.assertEqual(str_ret, f.read())
 
+    # @unittest.skip("todo:")
+    def test_generator_case3(self):
+        src_filename = "test_case3.alpl"
+        result_filename = "./test_results/test_case3.py"
+
+        lst_lines = Tokenizer(os.path.join(TEST_CASES_DIR, src_filename)).tokenize()
+        lst_flow, lst_labels = Parser().parse_tokens(lst_lines)
+
+        str_ret = Generator().generate(lst_flow, lst_labels)
+        with open(result_filename) as f:
+            self.assertEqual(str_ret, f.read())
+
 
     @unittest.skip("todo:")
     def test_parser(self):
@@ -92,8 +104,9 @@ class TestALPLInterpreter(unittest.TestCase):
             lst_lines = Tokenizer(os.path.join(TEST_CASES_DIR, src_filename)).tokenize()
             Parser().parse_tokens(lst_lines)
 
-    #@unittest.skip("todo:")
+    @unittest.skip("todo:")
     def test_interpreter_case0(self):
+        pdb.set_trace()
         old_stdout = sys.stdout
         sys.stdout = new_stdout = StringIO()
 
@@ -107,7 +120,7 @@ class TestALPLInterpreter(unittest.TestCase):
         with open(result_stdout_filename) as f:
             self.assertEqual(new_stdout.getvalue(), f.read())
 
-    # @unittest.skip("todo:")
+    #@unittest.skip("todo:")
     def test_interpreter_case1(self):
         src_filename = "test_case1.alpl"
         result_stdout_filename = "./test_results/test_case1_stdout"
@@ -116,7 +129,9 @@ class TestALPLInterpreter(unittest.TestCase):
         sys.stdout = new_stdout = StringIO()
 
         src_file_path = os.path.abspath(os.path.join(TEST_CASES_DIR, src_filename))
-        Interprerter(src_file_path).run_interpreter()
+
+        inter = Interprerter(src_file_path)
+        inter.run_interpreter()
 
         sys.stdout = old_stdout
         with open(result_stdout_filename) as f:
