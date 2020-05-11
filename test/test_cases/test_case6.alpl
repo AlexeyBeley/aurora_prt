@@ -1,0 +1,3 @@
+LET R0 := 1 + 1
+LET R0 := -10 * 2
+RETURNBLA:

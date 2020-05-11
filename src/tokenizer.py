@@ -29,7 +29,13 @@ class Tokenizer:
         LABEL = 7
 
     def tokenize(self):
-        return [self.tokenize_line(line) for line in self.lines if line is not None]
+        lst_ret = []
+        for line in self.lines:
+            tokens = self.tokenize_line(line)
+            if tokens is None:
+                continue
+            lst_ret.append(tokens)
+        return lst_ret
 
     def tokenize_line(self, str_line):
         str_line = str_line.strip("\n")
@@ -73,11 +79,7 @@ class Tokenizer:
         lst_ret[3] = self.int_or_reg(lst_ret[3])
 
         if len(lst_ret) > 4:
-            lst_ret[4] = self.operator_to_lambda(lst_ret[4])
             lst_ret[5] = self.int_or_reg(lst_ret[5])
-            if isinstance(lst_ret[3], int) and isinstance(lst_ret[5], int):
-                lst_ret[3] = lst_ret[4](lst_ret[3], lst_ret[5])
-                lst_ret = lst_ret[:4]
 
         return self.TokenType.LET, lst_ret[1:]
 

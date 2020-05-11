@@ -1,0 +1,6 @@
+LET R0 := 1
+LET R1 := R0
+LET R2 := R1 + 1
+LET R3 := 1 + R2
+LET R4 := R2 * R1
+
