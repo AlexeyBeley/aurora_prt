@@ -70,6 +70,8 @@ class Tokenizer:
 
     def _if(self, str_line):
         lst_ret = str_line.split(" ")
+        if lst_ret[2] == "=":
+            lst_ret[2] = "=="
         return self.TokenType.IF, lst_ret[1:]
 
     def _jump(self, str_line):
