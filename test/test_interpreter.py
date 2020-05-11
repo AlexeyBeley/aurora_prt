@@ -232,7 +232,7 @@ class TestALPLInterpreter(unittest.TestCase):
         with open(result_stdout_filename) as f:
             self.assertEqual(new_stdout.getvalue(), f.read())
 
-    @unittest.skip("todo:")
+    #@unittest.skip("todo:")
     def test_interpreter_case6(self):
         src_filename = "test_case6.alpl"
         result_stdout_filename = "./test_results/test_case6_stdout"

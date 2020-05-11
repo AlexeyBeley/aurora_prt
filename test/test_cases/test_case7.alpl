@@ -1,1 +1,2 @@
-LET R0 := 1
+CALL END
+END:
