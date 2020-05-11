@@ -96,17 +96,8 @@ class TestALPLInterpreter(unittest.TestCase):
         with open(result_filename) as f:
             self.assertEqual(str_ret, f.read())
 
-
-    @unittest.skip("todo:")
-    def test_parser(self):
-        for src_filename in os.listdir(TEST_CASES_DIR):
-            logger.debug("tokenizing {}".format(src_filename))
-            lst_lines = Tokenizer(os.path.join(TEST_CASES_DIR, src_filename)).tokenize()
-            Parser().parse_tokens(lst_lines)
-
-    @unittest.skip("todo:")
+    #@unittest.skip("todo:")
     def test_interpreter_case0(self):
-        pdb.set_trace()
         old_stdout = sys.stdout
         sys.stdout = new_stdout = StringIO()
 
@@ -136,6 +127,67 @@ class TestALPLInterpreter(unittest.TestCase):
         sys.stdout = old_stdout
         with open(result_stdout_filename) as f:
             self.assertEqual(new_stdout.getvalue(), f.read())
+
+    # @unittest.skip("todo:")
+    def test_interpreter_case2(self):
+        src_filename = "test_case2.alpl"
+        result_stdout_filename = "./test_results/test_case2_stdout"
+
+        old_stdout = sys.stdout
+        sys.stdout = new_stdout = StringIO()
+
+        src_file_path = os.path.abspath(os.path.join(TEST_CASES_DIR, src_filename))
+
+        inter = Interprerter(src_file_path)
+        inter.run_interpreter()
+
+        sys.stdout = old_stdout
+        with open(result_stdout_filename) as f:
+            self.assertEqual(new_stdout.getvalue(), f.read())
+
+
+    # @unittest.skip("todo:")
+    def test_interpreter_case3(self):
+        src_filename = "test_case1.alpl"
+        result_stdout_filename = "./test_results/test_case3_stdout"
+
+        old_stdout = sys.stdout
+        sys.stdout = new_stdout = StringIO()
+
+        src_file_path = os.path.abspath(os.path.join(TEST_CASES_DIR, src_filename))
+
+        inter = Interprerter(src_file_path)
+        inter.run_interpreter()
+
+        sys.stdout = old_stdout
+        with open(result_stdout_filename) as f:
+            self.assertEqual(new_stdout.getvalue(), f.read())
+
+
+    # @unittest.skip("todo:")
+    def test_interpreter_case4(self):
+        src_filename = "test_case4.alpl"
+        result_stdout_filename = "./test_results/test_case4_stdout"
+
+        old_stdout = sys.stdout
+        sys.stdout = new_stdout = StringIO()
+
+        src_file_path = os.path.abspath(os.path.join(TEST_CASES_DIR, src_filename))
+
+        inter = Interprerter(src_file_path)
+        inter.run_interpreter()
+
+        sys.stdout = old_stdout
+        with open(result_stdout_filename) as f:
+            self.assertEqual(new_stdout.getvalue(), f.read())
+
+    @unittest.skip("todo:")
+    def test_parser(self):
+        for src_filename in os.listdir(TEST_CASES_DIR):
+            logger.debug("tokenizing {}".format(src_filename))
+            lst_lines = Tokenizer(os.path.join(TEST_CASES_DIR, src_filename)).tokenize()
+            Parser().parse_tokens(lst_lines)
+
 
     @unittest.skip("todo:")
     def test_interpreter(self):
