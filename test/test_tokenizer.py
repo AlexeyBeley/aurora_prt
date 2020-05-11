@@ -14,15 +14,16 @@ logger.addHandler(ch)
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
 
 from tokenizer import Tokenizer
-
+TEST_CASES_DIR = "test_cases"
 #@unittest.skip("todo:")
 class TestTokenizer(unittest.TestCase):
     #@unittest.skip("todo:")
     def test_init(self):
-        for src_filename in os.listdir("test_cases"):
-            Tokenizer(src_filename)
+        for src_filename in os.listdir(TEST_CASES_DIR):
+            Tokenizer(os.path.join(TEST_CASES_DIR, src_filename))
 
     # @unittest.skip("todo:")
     def test_tokenize(self):
-        for src_filename in os.listdir("test_cases"):
-            Tokenizer(src_filename).tokenize()
+        for src_filename in os.listdir(TEST_CASES_DIR):
+            logger.debug("tokenizing {}".format(src_filename))
+            Tokenizer(os.path.join(TEST_CASES_DIR, src_filename)).tokenize()
