@@ -366,6 +366,24 @@ class TestALPLInterpreter(unittest.TestCase):
         with open(result_stdout_filename) as f:
             self.assertEqual(new_stdout.getvalue(), f.read())
 
+    # @unittest.skip("todo:")
+    def test_interpreter_case10(self):
+        src_filename = "test_case10.alpl"
+        result_stdout_filename = "./test_results/test_case10_stdout"
+
+        old_stdout = sys.stdout
+        #sys.stdout = new_stdout = StringIO()
+
+        src_file_path = os.path.abspath(os.path.join(TEST_CASES_DIR, src_filename))
+
+        inter = Interprerter(src_file_path)
+        pdb.set_trace()
+        inter.run_interpreter(dst_file_name="out_10.py")
+
+        sys.stdout = old_stdout
+        with open(result_stdout_filename) as f:
+            self.assertEqual(new_stdout.getvalue(), f.read())
+
     @unittest.skip("todo:")
     def test_parser(self):
         for src_filename in os.listdir(TEST_CASES_DIR):
