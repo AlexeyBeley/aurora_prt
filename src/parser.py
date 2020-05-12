@@ -23,6 +23,7 @@ class Parser(object):
     CALL_FLOW_STEP = ["env.push_call_return_line(line + 1)",
                       "line = env.get_line_by_label('{LABEL_NAME}')",
                       ]
+    LABEL_RETURN_STEP = ["line = env.pop_call_return_line()"]
 
     GET_REGISTER_VALUE = "env.get_register('{REGISTER_NAME}')"
     SET_LABEL_VALUE = "env.set_label('{LABEL_NAME}', {LINE_NUMBER})"
@@ -57,6 +58,9 @@ class Parser(object):
                 lst_flow += lst_let
             elif token_type == Tokenizer.TokenType.CALL:
                 lst_let = self.init_call(token_value)
+                lst_flow += lst_let
+            elif token_type == Tokenizer.TokenType.RETURN:
+                lst_let = self.init_return(token_value)
                 lst_flow += lst_let
             else:
                 pdb.set_trace()
@@ -130,9 +134,14 @@ class Parser(object):
     def init_call(self, token_value):
         lst_flow = self.handle_flow_if_statement()
         string_block = "\n".join(self.CALL_FLOW_STEP)
-        pdb.set_trace()
         string_block = string_block.format(LABEL_NAME=token_value[0])
 
+        lst_flow += self.string_block_to_intended_lines(string_block)
+        return lst_flow
+
+    def init_return(self, token_value):
+        lst_flow = self.handle_flow_if_statement()
+        string_block = "\n".join(self.LABEL_RETURN_STEP)
         lst_flow += self.string_block_to_intended_lines(string_block)
         return lst_flow
 

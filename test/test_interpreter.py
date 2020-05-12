@@ -131,6 +131,50 @@ class TestALPLInterpreter(unittest.TestCase):
         with open(result_filename) as f:
             self.assertEqual(str_ret, f.read())
 
+    def test_generator_case6_1(self):
+        src_filename = "test_case6_1.alpl"
+        result_filename = "./test_results/test_case6_1.py"
+
+        lst_lines = Tokenizer(os.path.join(TEST_CASES_DIR, src_filename)).tokenize()
+        lst_flow, lst_labels = Parser().parse_tokens(lst_lines)
+
+        str_ret = Generator().generate(lst_flow, lst_labels)
+        with open(result_filename) as f:
+            self.assertEqual(str_ret, f.read())
+
+    def test_generator_case7(self):
+        src_filename = "test_case7.alpl"
+        result_filename = "./test_results/test_case7.py"
+
+        lst_lines = Tokenizer(os.path.join(TEST_CASES_DIR, src_filename)).tokenize()
+        lst_flow, lst_labels = Parser().parse_tokens(lst_lines)
+
+        str_ret = Generator().generate(lst_flow, lst_labels)
+        with open(result_filename) as f:
+            self.assertEqual(str_ret, f.read())
+
+    def test_generator_case8(self):
+        src_filename = "test_case8.alpl"
+        result_filename = "./test_results/test_case8.py"
+
+        lst_lines = Tokenizer(os.path.join(TEST_CASES_DIR, src_filename)).tokenize()
+        lst_flow, lst_labels = Parser().parse_tokens(lst_lines)
+
+        str_ret = Generator().generate(lst_flow, lst_labels)
+        with open(result_filename) as f:
+            self.assertEqual(str_ret, f.read())
+
+    def test_generator_case9(self):
+        src_filename = "test_case9.alpl"
+        result_filename = "./test_results/test_case9.py"
+
+        lst_lines = Tokenizer(os.path.join(TEST_CASES_DIR, src_filename)).tokenize()
+        lst_flow, lst_labels = Parser().parse_tokens(lst_lines)
+
+        str_ret = Generator().generate(lst_flow, lst_labels)
+        with open(result_filename) as f:
+            self.assertEqual(str_ret, f.read())
+
     @unittest.skip("todo:")
     def test_interpreter_case0(self):
         old_stdout = sys.stdout
@@ -245,6 +289,96 @@ class TestALPLInterpreter(unittest.TestCase):
         inter = Interprerter(src_file_path)
 
         inter.run_interpreter(dst_file_name="out_6.py")
+
+        sys.stdout = old_stdout
+        with open(result_stdout_filename) as f:
+            self.assertEqual(new_stdout.getvalue(), f.read())
+
+    # @unittest.skip("todo:")
+    def test_interpreter_case6_1(self):
+        src_filename = "test_case6_1.alpl"
+        result_stdout_filename = "./test_results/test_case6_1_stdout"
+
+        old_stdout = sys.stdout
+        sys.stdout = new_stdout = StringIO()
+
+        src_file_path = os.path.abspath(os.path.join(TEST_CASES_DIR, src_filename))
+
+        inter = Interprerter(src_file_path)
+
+        inter.run_interpreter(dst_file_name="out_6_1.py")
+
+        sys.stdout = old_stdout
+        with open(result_stdout_filename) as f:
+            self.assertEqual(new_stdout.getvalue(), f.read())
+
+    #@unittest.skip("todo:")
+    def test_interpreter_case7(self):
+        src_filename = "test_case7.alpl"
+        result_stdout_filename = "./test_results/test_case7_stdout"
+
+        old_stdout = sys.stdout
+        sys.stdout = new_stdout = StringIO()
+
+        src_file_path = os.path.abspath(os.path.join(TEST_CASES_DIR, src_filename))
+
+        inter = Interprerter(src_file_path)
+
+        inter.run_interpreter(dst_file_name="out_7.py")
+
+        sys.stdout = old_stdout
+        with open(result_stdout_filename) as f:
+            self.assertEqual(new_stdout.getvalue(), f.read())
+
+    #@unittest.skip("todo:")
+    def test_interpreter_case8(self):
+        src_filename = "test_case8.alpl"
+        result_stdout_filename = "./test_results/test_case8_stdout"
+
+        old_stdout = sys.stdout
+        sys.stdout = new_stdout = StringIO()
+
+        src_file_path = os.path.abspath(os.path.join(TEST_CASES_DIR, src_filename))
+
+        inter = Interprerter(src_file_path)
+
+        inter.run_interpreter(dst_file_name="out_8.py")
+
+        sys.stdout = old_stdout
+        with open(result_stdout_filename) as f:
+            self.assertEqual(new_stdout.getvalue(), f.read())
+
+    # @unittest.skip("todo:")
+    def test_interpreter_case9(self):
+        src_filename = "test_case9.alpl"
+        result_stdout_filename = "./test_results/test_case9_stdout"
+
+        old_stdout = sys.stdout
+        sys.stdout = new_stdout = StringIO()
+
+        src_file_path = os.path.abspath(os.path.join(TEST_CASES_DIR, src_filename))
+
+        inter = Interprerter(src_file_path)
+
+        inter.run_interpreter(dst_file_name="out_9.py")
+
+        sys.stdout = old_stdout
+        with open(result_stdout_filename) as f:
+            self.assertEqual(new_stdout.getvalue(), f.read())
+
+    # @unittest.skip("todo:")
+    def test_interpreter_case10(self):
+        src_filename = "test_case10.alpl"
+        result_stdout_filename = "./test_results/test_case10_stdout"
+
+        old_stdout = sys.stdout
+        sys.stdout = new_stdout = StringIO()
+
+        src_file_path = os.path.abspath(os.path.join(TEST_CASES_DIR, src_filename))
+
+        inter = Interprerter(src_file_path)
+
+        inter.run_interpreter(dst_file_name="out_10.py")
 
         sys.stdout = old_stdout
         with open(result_stdout_filename) as f:

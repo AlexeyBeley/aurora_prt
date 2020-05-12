@@ -26,4 +26,4 @@ class Environment(object):
         self.call_stack.insert(0, value)
 
     def pop_call_return_line(self):
-        self.call_stack.pop(0)
+        return self.call_stack.pop(0)
