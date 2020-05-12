@@ -4,6 +4,7 @@ from tokenizer import Tokenizer
 from parser import Parser
 from generator import Generator
 from environment import Environment
+import sys
 
 
 class Interprerter(object):
@@ -16,7 +17,6 @@ class Interprerter(object):
 
     def run_interpreter(self, dst_file_name="interpreted_tmp.py"):
         self.interpreted_file_name = os.path.join(os.path.abspath(os.path.dirname(__file__)), "generated_files", dst_file_name)
-
         self.generate_file()
         self.run_generated_file()
 
@@ -31,7 +31,14 @@ class Interprerter(object):
 
     def run_generated_file(self):
         module_name = os.path.basename(self.interpreted_file_name)
-        module_name = "generated_files." + module_name.strip(".py")
+        module_name = "generated_files." + module_name[:-3]
         mod = __import__(module_name, fromlist=[''])
         mod.run(self.env)
 
+if __name__ == "__main__":
+    file_path = sys.argv[1]
+    interpreter = Interprerter(file_path)
+
+    file_name = os.path.basename(file_path)
+    file_name = file_name.replace(".", "_")
+    interpreter.run_interpreter("{}_hry.py".format(file_name))

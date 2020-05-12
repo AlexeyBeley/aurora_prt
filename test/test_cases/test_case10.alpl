@@ -1,6 +1,6 @@
 LET R5 := 10
 LET R0 := 0
-LET R4 := 1
+LET R4 := 2
 
 LOOPONR5:
 IF R5 = R0 END

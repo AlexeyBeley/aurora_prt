@@ -372,12 +372,12 @@ class TestALPLInterpreter(unittest.TestCase):
         result_stdout_filename = "./test_results/test_case10_stdout"
 
         old_stdout = sys.stdout
-        #sys.stdout = new_stdout = StringIO()
+        sys.stdout = new_stdout = StringIO()
 
         src_file_path = os.path.abspath(os.path.join(TEST_CASES_DIR, src_filename))
 
         inter = Interprerter(src_file_path)
-        pdb.set_trace()
+
         inter.run_interpreter(dst_file_name="out_10.py")
 
         sys.stdout = old_stdout
